@@ -8,8 +8,11 @@ import com.poc.configserver.service.client.CloudConfigClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 @Service
 public class PropertiesService {
@@ -27,14 +30,18 @@ public class PropertiesService {
         propertiesRepository.saveAll(mapper.toListProperties(dto));
     }
 
-    public Object findConfigurations(final String profile, final String label, final String application) throws IOException {
-        return objectMapper.readValue(cloudConfigClient.getConfiguration(label, application, profile), Object.class);
+    public LinkedHashMap findConfigurations(final String profile, final String label, final String application) throws IOException {
+        return objectMapper.readValue(cloudConfigClient.getConfiguration(label, application, profile), LinkedHashMap.class);
+    }
+
+    public List<String> findAllApplications() {
+        return propertiesRepository.findAllApplications();
     }
 
     public void update(final String profile, final String label, final String application, final Object dto) throws IOException, PropertieConfigException {
 
-        final Object configurations = findConfigurations(profile, label, application);
-        if(configurations == null) {
+        final LinkedHashMap configurations = findConfigurations(profile, label, application);
+        if(CollectionUtils.isEmpty(configurations)) {
             throw new PropertieConfigException();
         }
         save(profile, label, application, dto);

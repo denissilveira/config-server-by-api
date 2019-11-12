@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient("config-server")
+@FeignClient(name = "cloudConfigClient", url = "${application.config-server.url}")
 public interface CloudConfigClient {
 
     @RequestMapping(value = "/config/{label}/{application}-{profile}.json", method = RequestMethod.GET)

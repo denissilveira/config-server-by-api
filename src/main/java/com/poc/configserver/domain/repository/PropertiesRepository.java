@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface PropertiesRepository extends JpaRepository<Properties, Long> {
 
-    @Query(value = "select p.application from Properties p group by p.application", nativeQuery = true)
+    @Query(value = "select p.config_application from Properties p group by p.config_application", nativeQuery = true)
     List<String> findAllApplications();
 
 }
