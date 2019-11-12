@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        jdbc:
+          sql: SELECT config_key, config_value FROM properties WHERE config_application=? AND config_profile=? AND config_label=?
+          order: 1
+        prefix: /config
+  datasource:
+    url: jdbc:mysql://localhost:3306/configserver?useUnicode=true&characterEncoding=utf8&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 5000
+  profiles:
+    active:
+    - jdbc
+  liquibase:
+    change-log: classpath:/db/changelog/changelog-master.xml
+
+logging:
+  level:
+    liquibase: INFO
+
+eureka:
+    instance:
+        prefer-ip-address: true
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8888
