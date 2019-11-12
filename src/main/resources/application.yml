@@ -11,8 +11,8 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/configserver?useUnicode=true&characterEncoding=utf8&useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
-    username: root
-    password: 
+    username: config
+    password: server
     hikari:
       maximum-pool-size: 10
       connection-timeout: 5000
