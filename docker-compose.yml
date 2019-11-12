@@ -1,0 +1,34 @@
+version: '3.6'
+
+volumes:
+  my-db:
+    driver: local
+services:
+  mysql-db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'configserver'
+      MYSQL_USER: 'config'
+      MYSQL_PASSWORD: 'server'
+      MYSQL_ROOT_PASSWORD: 'server'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+  eureka-server:
+    image:  spring-cloud-netflix-example/eureka-server
+    hostname: eureka-server
+    ports:
+      - '8761:8761'
+  configserver:
+    image: denissilveira/config-server-by-api
+    ports:
+      - '8888:8888'
+    expose:
+      - '3306'
+    links:
+      - mysql-db
+      - eureka-server
