@@ -19,11 +19,13 @@ services:
     volumes:
       - my-db:/var/lib/mysql
   eureka-server:
-    image:  spring-cloud-netflix-example/eureka-server
+    image:  denissilveira/eureka-server
     hostname: eureka-server
     ports:
       - '8761:8761'
-  configserver:
+    expose:
+      - '8761'
+  config-server:
     image: denissilveira/config-server-by-api
     ports:
       - '8888:8888'
